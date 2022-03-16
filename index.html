@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>숫자맞추기 게임</title>
+</head>
+<body>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+<article class="h-screen flex justify-center items-center">
+  <section class="w-[400px] mx-auto border shadow-lg rounded-lg p-6">
+    <h1 class="text-center text-lg font-bold mb-6 text-blue-500">숫자맞춤기 게임</h1>
+    <input type="number" id="number" class="border focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-md p-2 w-full text-center">
+    
+    <div class="w-full flex justify-between space-x-2 mt-2">
+      <button type="button" id="go" class="w-1/2 text-center text-white bg-blue-500 p-2 rounded-md">go</button>
+      <button type="button" id="reset" class="w-1/2 text-center text-white bg-orange-500 p-2 rounded-md">reset</button>
+    </div>
+    
+    <div class="mt-2 border rounded-md p-2 text-center"> 
+      <h2 class="insurt" class="text-zinc-400">결과출력</h2>
+    </div>
+  </section>
+  
+</article>
+
+<script>
+  const number = Math.floor(1 + Math.random() * 100);
+
+const go = document.querySelector("#go");
+const numberInput = document.querySelector("#number");
+const response = document.querySelector(".insurt");
+const resetButton = document.querySelector("#reset");
+
+let sameNum = [];//request한 값을 저장할 배열
+let clickNumber = 0;
+
+go.addEventListener("click", function(e){
+  let intNumber = parseInt(numberInput.value);
+  if(sameNum.includes(intNumber)){
+    alert("이전과 같은 값입니다");
+    return false;
+  }
+  
+  if(!intNumber){
+    alert("숫자를 작성해주세요");
+    return false;
+  }else if(intNumber > 100){
+    alert("1부터 100사이의 숫자를 입력해주세요")
+    return false;
+  }
+  
+  intNumber < number ? response.innerText="up " : intNumber > number ? response.innerText="down" : intNumber == number ? response.innerText="정답입니다!" : null;
+  
+  clickNumber++;
+  clickNumber >= 5 ? (
+    go.disabled=true,
+    go.classList.remove('bg-blue-500'),
+    go.classList.add('bg-red-500'),
+    response.innerText="재도전 하세요"
+  ) : null;
+  
+  sameNum.push(intNumber);
+  console.log(intNumber);
+  console.log(clickNumber);
+  console.log(sameNum);
+});
+
+resetButton.addEventListener("click", e => {
+  numberInput.value=null;
+  clickNumber = 0;
+  go.classList.remove('bg-red-500');
+  go.classList.add('bg-blue-500');
+  response.innerText="결과출력";
+  go.disabled = false;
+  sameNum = [];
+});
+//clear
+
+</script>
+</body>
+</html>
